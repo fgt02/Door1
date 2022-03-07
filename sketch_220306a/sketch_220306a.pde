@@ -2,17 +2,24 @@ import controlP5.*;
 import de.looksgood.ani.*;
 ControlP5 cp5;
 Accordion accordion;
-PShape door, blue1, blue2, l1, l2;
-PImage wrhs;
-float y = 340;
-float t = 5;
-void setup() {
-  fullScreen();
-  background(123,123,123);
-  smooth();
-  wrhs = loadImage("wrhs.jpg");
-  imageMode(CENTER);
-  gui();
+PShape door, blue1, blue2, l1, l2; // variables que conforman la puerta
+PImage wrhs; //imagen de fondo
+float y = 340; //variable altura para la puerta
+float t = 5; //tiempo
+
+// Display
+// Modo manual (botones)
+// Modo automatico (configuracion acordeon)
+// Sensores de limite
+// Velocidades
+
+void setup() { //setup
+  fullScreen(); //pantalla completa
+  background(123,123,123); //color gris de fondo
+  smooth(); //smooth
+  wrhs = loadImage("wrhs.jpg"); //asigna imagen
+  imageMode(CENTER); //coordenadas de la imagen son en el centro
+  gui(); 
   textSize(50);
   Ani.init(this);
 }
