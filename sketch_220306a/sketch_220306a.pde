@@ -80,6 +80,9 @@ void draw(){
 void mouseClicked(){
   for (int i=340; i>40; i=i-1){
   Ani.to(this, t, "y", i);
+  
+  //algo cabron
+  //otra cosa
   }
 }
 
