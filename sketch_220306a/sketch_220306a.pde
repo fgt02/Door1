@@ -22,6 +22,8 @@ void setup() { //setup
   gui(); //acordion
   textSize(50);
   Ani.init(this); //inicializar ani
+  Ani.setDefaultEasing(Ani.QUART_OUT);
+
 }
 void gui() { //acordion
   
