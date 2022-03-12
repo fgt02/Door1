@@ -15,7 +15,6 @@ float Tiempo, Sensor_Superior, Sensor_Inferior, y = 740, SS1, SS2; //declaracion
 void setup() { //setup
   fullScreen(); //pantalla completa
   frameRate(60);
-  background(123,123,123); //color gris de fondo
   smooth(); //smooth
   wrhs = loadImage("wrhs.jpg"); //asigna imagen
   imageMode(CENTER); //coordenadas de la imagen son en el centro
@@ -72,6 +71,7 @@ accordion.open(0,1,2);
 
 
 void draw(){ //dibujo
+  background(123,123,123); //color gris de fondo
   strokeWeight(16); //contorno ancho
   line(0, 748, 1920, 748); //linea del piso
   strokeWeight(8); //contorno delgado
