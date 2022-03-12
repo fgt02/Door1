@@ -30,52 +30,34 @@ void gui() { //acordion
   
   Group g1 = cp5.addGroup("Configuracion") //configuracion acordion
                 .setBackgroundColor(color(0))
-                .setBackgroundHeight(400)
+                .setBackgroundHeight(300)
                 .setBarHeight(50)
                 .setFont(createFont("This",20))
                 ;
   cp5.addSlider("Tiempo") //slider tiempo
-     .setPosition(90,20)
+     .setPosition(60,20)
      .setSize(120,30)
      .setRange(3,5)
      .setValue(5)
-     .setFont(createFont("This",13))
+     .setFont(createFont("This",15))
      .moveTo(g1)
      ;
 
   cp5.addSlider("Sensor_Superior") //slider sensor superior
-     .setPosition(40,80)
+     .setPosition(20,80)
      .setSize(30,120)
      .setRange(2,4)
      .setValue(4)
-     .setFont(createFont("This",13))
+     .setFont(createFont("This",12))
      .moveTo(g1)
      ;
      
   cp5.addSlider("Sensor_Inferior") //slider sensor inferior
-     .setPosition(180,80)
+     .setPosition(160,80)
      .setSize(30,120)
      .setRange(0,2)
      .setValue(0)
-     .setFont(createFont("This",13))
-     .moveTo(g1)
-     ;
-     
-  cp5.addSlider("Tiempo_Espera") //slider tiempo
-     .setPosition(90,240)
-     .setSize(120,30)
-     .setRange(1,5)
-     .setValue(5)
-     .setFont(createFont("This",13))
-     .moveTo(g1)
-     ;
-  
-  cp5.addToggle("Manual-Automático")
-     .setPosition(100,300)
-     .setSize(90,30)
-     .setValue(true)
-     .setMode(ControlP5.SWITCH)
-     .setFont(createFont("This",13))
+     .setFont(createFont("This",12))
      .moveTo(g1)
      ;
      
@@ -128,12 +110,6 @@ void door(){ //funcion puerta
 void open(){
 Ani.to (this, Tiempo, "y", SS1);
 }
-void close(){
-Ani.to (this, Tiempo, "y", SS2);
-}
-
-
-
 void mouseClicked (){
   open();
 }
