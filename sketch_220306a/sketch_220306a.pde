@@ -4,7 +4,7 @@ ControlP5 cp5;
 Accordion accordion;
 PShape door, blue1, blue2, l1, l2; // variables que conforman la puerta
 PImage wrhs; //imagen de fondo
-float Tiempo, Sensor_Superior, Sensor_Inferior, y = 740; //declaracion variables tiempo y altura de sensores
+float Tiempo, Sensor_Superior, Sensor_Inferior, y = 740, SS1, SS2; //declaracion variables tiempo y altura de sensores
 
 // Display
 // Modo manual (botones)
@@ -69,6 +69,8 @@ void gui() { //acordion
                  ;
 accordion.open(0,1,2);
 }
+
+
 void draw(){ //dibujo
   strokeWeight(16); //contorno ancho
   line(0, 748, 1920, 748); //linea del piso
@@ -76,8 +78,10 @@ void draw(){ //dibujo
   fill(255);
   rect(710, 260, 500, 480); //bordes de la puerta
   image(wrhs,960,540); //fondo warehouse
-  sensor(740 - (Sensor_Superior*100)); //dibujo sensor superior
-  sensor(740 - (Sensor_Inferior*100)); //dibujo sensor inferior
+  SS1 = 740 - (Sensor_Superior*100);
+  SS2 = 740 - (Sensor_Inferior*100);
+  sensor(SS1); //dibujo sensor superior
+  sensor(SS2); //dibujo sensor inferior
   door(); //dibujo puerta
 }
 
@@ -104,7 +108,7 @@ void door(){ //funcion puerta
 }
 
 void open(){
-Ani.to (this, Tiempo, "y",(740-(Sensor_Superior*100)));
+Ani.to (this, Tiempo, "y", SS1);
 }
 void mouseClicked (){
   open();
