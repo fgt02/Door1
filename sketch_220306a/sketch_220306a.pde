@@ -5,7 +5,7 @@ Accordion accordion;
 PShape door, blue1, blue2, l1, l2; // variables que conforman la puerta
 PImage wrhs; //imagen de fondo
 float Tiempo, Sensor_Superior, Sensor_Inferior, y = 740, SS1, SS2,Tiempo_Espera; //declaracion variables tiempo y altura de sensores
-boolean manualAutomático;
+boolean manualAutomatico;
 
 // Display
 // Modo manual (botones)
@@ -71,7 +71,7 @@ void gui() { //acordion
      .moveTo(g1)
      ;
   
-  cp5.addToggle("manualAutomático")
+  cp5.addToggle("manualAutomatico")
      .setPosition(100,300)
      .setSize(90,30)
      .setValue(true)
