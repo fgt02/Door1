@@ -102,21 +102,3 @@ void door(){ //funcion puerta
   door.addChild(blue2);
   shape(door); //dibujar door
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void close(){
-  
-}
