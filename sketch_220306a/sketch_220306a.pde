@@ -103,14 +103,6 @@ void door(){ //funcion puerta
   door.addChild(l2);
   door.addChild(blue2);
   shape(door); //dibujar door
-  
-}
-
-void open (){
-  Y=Sensor_Superior;
-  Ani.to(this,Tiempo,y);
-  
-  
 }
 
 
