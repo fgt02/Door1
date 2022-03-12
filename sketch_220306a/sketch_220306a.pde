@@ -110,6 +110,12 @@ void door(){ //funcion puerta
 void open(){
 Ani.to (this, Tiempo, "y", SS1);
 }
+void close(){
+Ani.to (this, Tiempo, "y", SS2);
+}
+
+
+
 void mouseClicked (){
   open();
 }
