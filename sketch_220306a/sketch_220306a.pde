@@ -102,3 +102,10 @@ void door(){ //funcion puerta
   door.addChild(blue2);
   shape(door); //dibujar door
 }
+
+void open(){
+Ani.to (this, Tiempo, "y",(740-(Sensor_Superior*100)));
+}
+void mouseClicked (){
+  open();
+}
