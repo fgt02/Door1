@@ -4,7 +4,7 @@ ControlP5 cp5;
 Accordion accordion;
 PShape door, blue1, blue2, l1, l2; // variables que conforman la puerta
 PImage wrhs; //imagen de fondo
-float Tiempo, Sensor_Superior, Sensor_Inferior; //declaracion variables tiempo y altura de sensores
+float Tiempo, Sensor_Superior, Sensor_Inferior, y = 740; //declaracion variables tiempo y altura de sensores
 
 // Display
 // Modo manual (botones)
@@ -90,15 +90,33 @@ void sensor(float y){ //funcion sensores
 void door(){ //funcion puerta
   strokeWeight(8);
   door = createShape(GROUP); //grupo puerta
-  blue1 = createShape(RECT, 760, 340, 400, 150); //parte azul arriba
+  blue1 = createShape(RECT, 760, y-400, 400, 150); //parte azul arriba
   blue1.setFill(color(0,0,255)); //color azul
-  l1 = createShape(LINE, 760, 490 , 760, 590); //linea izquierda
-  l2 = createShape(LINE, 1160, 490, 1160, 590); //linea derecha
-  blue2 = createShape(RECT, 760, 590, 400, 150); //parte azul abajo
+  l1 = createShape(LINE, 760, y-250 , 760, y-150); //linea izquierda
+  l2 = createShape(LINE, 1160, y-250, 1160, y-150); //linea derecha
+  blue2 = createShape(RECT, 760, y-150, 400, 150); //parte azul abajo
   blue2.setFill(color(0,0,255)); //color azul
   door.addChild(blue1); //agregar a grupo door
   door.addChild(l1);
   door.addChild(l2);
   door.addChild(blue2);
   shape(door); //dibujar door
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void close(){
+  
 }
