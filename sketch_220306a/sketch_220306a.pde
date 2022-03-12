@@ -73,6 +73,8 @@ void draw(){ //dibujo
   strokeWeight(8); //contorno delgado
   fill(255);
   rect(710, 260, 500, 480); //bordes de la puerta
+  
+  
   image(wrhs,960,540); //fondo warehouse
   sensor(740 - (Sensor_Superior*100)); //dibujo sensor superior
   sensor(740 - (Sensor_Inferior*100)); //dibujo sensor inferior
