@@ -3,9 +3,9 @@ import de.looksgood.ani.*;
 ControlP5 cp5;
 Accordion accordion;
 PShape door, blue1, blue2, l1, l2; // variables que conforman la puerta
-PImage wrhs; //imagen de fondo
-float Tiempo, Sensor_Superior, Sensor_Inferior, y = 740, SS1, SS2,Tiempo_Espera; //declaracion variables tiempo y altura de sensores
-boolean manualAutomatico;
+PImage wrhs, buttonUp, buttonDown, emergency; //imagen de fondo
+float Tiempo, Sensor_Superior, Sensor_Inferior; //declaracion variables tiempo y altura de sensores
+
 
 // Display
 // Modo manual (botones)
@@ -16,6 +16,7 @@ boolean manualAutomatico;
 void setup() { //setup
   fullScreen(); //pantalla completa
   frameRate(60);
+  background(123,123,123); //color gris de fondo
   smooth(); //smooth
   wrhs = loadImage("wrhs.jpg"); //asigna imagen
   imageMode(CENTER); //coordenadas de la imagen son en el centro
@@ -23,7 +24,24 @@ void setup() { //setup
   textSize(50);
   Ani.init(this); //inicializar ani
   Ani.setDefaultEasing(Ani.QUART_OUT);
-
+  //imágenes de botones manuales
+  buttonUp = loadImage("button.png");
+  buttonDown = loadImage("buttonDown.png");
+  emergency = loadImage("emergency.png");
+  
+  //botones manuales
+  cp5.addButton("Up")
+    .setPosition(1350,280)
+    .setImage(buttonUp)
+    ;
+  cp5.addButton("Down")
+    .setPosition(1350, 600)
+    .setImage(buttonDown)
+    ;
+  cp5.addButton("Emergency")
+    .setPosition(1290, 380)
+    .setImage(emergency)
+    ;
 }
 void gui() { //acordion
   
@@ -31,52 +49,34 @@ void gui() { //acordion
   
   Group g1 = cp5.addGroup("Configuracion") //configuracion acordion
                 .setBackgroundColor(color(0))
-                .setBackgroundHeight(400)
+                .setBackgroundHeight(300)
                 .setBarHeight(50)
                 .setFont(createFont("This",20))
                 ;
   cp5.addSlider("Tiempo") //slider tiempo
-     .setPosition(90,20)
+     .setPosition(60,20)
      .setSize(120,30)
      .setRange(3,5)
      .setValue(5)
-     .setFont(createFont("This",13))
+     .setFont(createFont("This",15))
      .moveTo(g1)
      ;
 
   cp5.addSlider("Sensor_Superior") //slider sensor superior
-     .setPosition(40,80)
+     .setPosition(20,80)
      .setSize(30,120)
      .setRange(2,4)
      .setValue(4)
-     .setFont(createFont("This",13))
+     .setFont(createFont("This",12))
      .moveTo(g1)
      ;
      
   cp5.addSlider("Sensor_Inferior") //slider sensor inferior
-     .setPosition(180,80)
+     .setPosition(160,80)
      .setSize(30,120)
      .setRange(0,2)
      .setValue(0)
-     .setFont(createFont("This",13))
-     .moveTo(g1)
-     ;
-     
-  cp5.addSlider("Tiempo_Espera") //slider tiempo
-     .setPosition(90,240)
-     .setSize(120,30)
-     .setRange(1,5)
-     .setValue(5)
-     .setFont(createFont("This",13))
-     .moveTo(g1)
-     ;
-  
-  cp5.addToggle("manualAutomatico")
-     .setPosition(100,300)
-     .setSize(90,30)
-     .setValue(true)
-     .setMode(ControlP5.SWITCH)
-     .setFont(createFont("This",13))
+     .setFont(createFont("This",12))
      .moveTo(g1)
      ;
      
@@ -87,20 +87,15 @@ void gui() { //acordion
                  ;
 accordion.open(0,1,2);
 }
-
-
 void draw(){ //dibujo
-  background(123,123,123); //color gris de fondo
   strokeWeight(16); //contorno ancho
   line(0, 748, 1920, 748); //linea del piso
   strokeWeight(8); //contorno delgado
   fill(255);
   rect(710, 260, 500, 480); //bordes de la puerta
   image(wrhs,960,540); //fondo warehouse
-  SS1 = 740 - (Sensor_Superior*100);
-  SS2 = 740 - (Sensor_Inferior*100);
-  sensor(SS1); //dibujo sensor superior
-  sensor(SS2); //dibujo sensor inferior
+  sensor(740 - (Sensor_Superior*100)); //dibujo sensor superior
+  sensor(740 - (Sensor_Inferior*100)); //dibujo sensor inferior
   door(); //dibujo puerta
 }
 
@@ -113,28 +108,15 @@ void sensor(float y){ //funcion sensores
 void door(){ //funcion puerta
   strokeWeight(8);
   door = createShape(GROUP); //grupo puerta
-  blue1 = createShape(RECT, 760, y-400, 400, 150); //parte azul arriba
+  blue1 = createShape(RECT, 760, 340, 400, 150); //parte azul arriba
   blue1.setFill(color(0,0,255)); //color azul
-  l1 = createShape(LINE, 760, y-250 , 760, y-150); //linea izquierda
-  l2 = createShape(LINE, 1160, y-250, 1160, y-150); //linea derecha
-  blue2 = createShape(RECT, 760, y-150, 400, 150); //parte azul abajo
+  l1 = createShape(LINE, 760, 490 , 760, 590); //linea izquierda
+  l2 = createShape(LINE, 1160, 490, 1160, 590); //linea derecha
+  blue2 = createShape(RECT, 760, 590, 400, 150); //parte azul abajo
   blue2.setFill(color(0,0,255)); //color azul
   door.addChild(blue1); //agregar a grupo door
   door.addChild(l1);
   door.addChild(l2);
   door.addChild(blue2);
   shape(door); //dibujar door
-}
-
-void open(){
-Ani.to (this, Tiempo, "y", SS1);
-}
-void close(){
-Ani.to (this, Tiempo, "y", SS2);
-}
-
-
-
-void mouseClicked (){
-  open();
 }
