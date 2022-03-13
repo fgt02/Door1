@@ -34,17 +34,21 @@ void setup() { //setup
   cp5.addButton("Up")
     .setPosition(1350,280)
     .setImage(buttonUp)
+    .updateSize()
     ;
   cp5.addButton("Down")
     .setPosition(1350, 600)
     .setImage(buttonDown)
+    .updateSize()
     ;
   cp5.addButton("Emergency")
     .setPosition(1290, 380)
     .setImage(emergency)
+    .updateSize()
     ;
     
 }
+
 void gui() { //acordion
   
   cp5 = new ControlP5(this);
@@ -125,12 +129,14 @@ void draw(){ //dibujo
   sensor(SS1); //dibujo sensor superior
   sensor(SS2); //dibujo sensor inferior
   door(); //dibujo puerta
-  if (!manualAutomatico){
-  movement();
-  }
-  else {
-  }
+  //if (!manualAutomatico){
+  //movement();
+  //}
+  //else {
+    
+  //}
 }
+
 void sensor(float y){ //funcion sensores
   fill(0,255,0);
   strokeWeight(2);
@@ -154,10 +160,15 @@ void door(){ //funcion puerta
 }
 
 public void Up(){
+  if (manualAutomatico){
   Ani.to (this, Tiempo, "y", SS1);
   }
+  }
+  
 public void Down(){
+ if (manualAutomatico){
   Ani.to (this, Tiempo, "y", SS2);
+  }
 }
 
 void movement (){
