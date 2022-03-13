@@ -5,15 +5,16 @@ Accordion accordion;
 PShape door, blue1, blue2, l1, l2; // variables que conforman la puerta
 PImage wrhs, buttonUp, buttonDown, emergency; //imagen de fondo
 float Tiempo, Sensor_Superior, Sensor_Inferior, y = 740, SS1, SS2; //declaracion variables tiempo y altura de sensores
-boolean manualAutomatico, Up, Down, Emergency;
+boolean manualAutomatico;
 int tiempoEsperaMl, Tiempo_Espera;
-AniSequence move;
+
+AniSequence Secuencia;
+
 // Display
 // Modo manual (botones)
 // Modo automatico (configuracion acordeon)
 // Sensores de limite
 // Velocidades
-
 
 void setup() { //setup
   fullScreen(); //pantalla completa
@@ -30,21 +31,25 @@ void setup() { //setup
   buttonUp = loadImage("button.png");
   buttonDown = loadImage("buttonDown.png");
   emergency = loadImage("emergency.png");
+  
   //botones manuales
-  cp5.addButton("Up")
-    .setPosition(1350,280)
-    .setImage(buttonUp)
-    ;
-  cp5.addButton("Down")
-    .setPosition(1350, 600)
-    .setImage(buttonDown)
-    ;
-  cp5.addButton("Emergency")
-    .setPosition(1290, 380)
-    .setImage(emergency)
-    ;
+   cp5.addButton("Up")
+      .setPosition(1350,280)
+      .setImage(buttonUp)
+      ;
     
+    cp5.addButton("Down")
+      .setPosition(1350, 600)
+      .setImage(buttonDown)
+      ;
+      
+    cp5.addButton("Emergency")
+      .setPosition(1290, 380)
+      .setImage(emergency)
+      ;
+     
 }
+
 void gui() { //acordion
   
   cp5 = new ControlP5(this);
@@ -113,24 +118,17 @@ accordion.open(0,1,2);
 
 
 void draw(){ //dibujo
-  background(123,123,123); //color gris de fondo
   strokeWeight(16); //contorno ancho
   line(0, 748, 1920, 748); //linea del piso
   strokeWeight(8); //contorno delgado
   fill(255);
   rect(710, 260, 500, 480); //bordes de la puerta
   image(wrhs,960,540); //fondo warehouse
-  SS1 = 740 - (Sensor_Superior*100);
-  SS2 = 740 - (Sensor_Inferior*100);
-  sensor(SS1); //dibujo sensor superior
-  sensor(SS2); //dibujo sensor inferior
+  sensor(740 - (Sensor_Superior*100)); //dibujo sensor superior
+  sensor(740 - (Sensor_Inferior*100)); //dibujo sensor inferior
   door(); //dibujo puerta
-  if (!manualAutomatico){
-  movement();
-  }
-  else {
-  }
 }
+
 void sensor(float y){ //funcion sensores
   fill(0,255,0);
   strokeWeight(2);
@@ -140,11 +138,11 @@ void sensor(float y){ //funcion sensores
 void door(){ //funcion puerta
   strokeWeight(8);
   door = createShape(GROUP); //grupo puerta
-  blue1 = createShape(RECT, 760, y-400, 400, 150); //parte azul arriba
+  blue1 = createShape(RECT, 760, 340, 400, 150); //parte azul arriba
   blue1.setFill(color(0,0,255)); //color azul
-  l1 = createShape(LINE, 760, y-250 , 760, y-150); //linea izquierda
-  l2 = createShape(LINE, 1160, y-250, 1160, y-150); //linea derecha
-  blue2 = createShape(RECT, 760, y-150, 400, 150); //parte azul abajo
+  l1 = createShape(LINE, 760, 490 , 760, 590); //linea izquierda
+  l2 = createShape(LINE, 1160, 490, 1160, 590); //linea derecha
+  blue2 = createShape(RECT, 760, 590, 400, 150); //parte azul abajo
   blue2.setFill(color(0,0,255)); //color azul
   door.addChild(blue1); //agregar a grupo door
   door.addChild(l1);
@@ -153,25 +151,32 @@ void door(){ //funcion puerta
   shape(door); //dibujar door
 }
 
-public void Up(){
+void open(){
   Ani.to (this, Tiempo, "y", SS1);
-  }
-public void Down(){
+  
+}
+void closeD(){
+  
   Ani.to (this, Tiempo, "y", SS2);
+//if (((mouseX >=760) && (mouseX<=1160)) && ((mouseY >=340) && (mouseY<=740))) {
+ // if (aniC.isPlaying())
+  //aniC.pause();
+  //open();
+//} else {
+//  aniC.resume();
+//}
+
 }
 
 void movement (){
-  move = null;
-  move = new AniSequence(this);
-  move.beginSequence();
+  if (!manualAutomatico){
     if (((mouseX >=760) && (mouseX<=1160)) && ((mouseY >=340) && (mouseY<=740))) {
-       move.add(Ani.to (this, Tiempo, "y", SS1));
-       move.pause();
-       delay(tiempoEsperaMl);}
-    else{        
-       move.resume();
-       move.add(Ani.to (this, Tiempo, "y", SS2));
+       open();
+       
+       //closeD();
+    }
+       
+       
+     }
+ 
   }
-  move.endSequence();
-  move.start();
-}
