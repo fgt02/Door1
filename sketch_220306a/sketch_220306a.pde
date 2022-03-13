@@ -4,9 +4,9 @@ ControlP5 cp5;
 Accordion accordion;
 PShape door, blue1, blue2, l1, l2; // variables que conforman la puerta
 PImage wrhs, buttonUp, buttonDown, emergency; //imagen de fondo
-float Tiempo, Sensor_Superior, Sensor_Inferior, y = 740, SS1, SS2; //declaracion variables tiempo y altura de sensores
+float Tiempo, Sensor_Superior, Sensor_Inferior, y = 740, SS1, SS2, Tiempo_Espera; //declaracion variables tiempo y altura de sensores
 boolean manualAutomatico, Up, Down, Emergency;
-int tiempoEsperaMl, Tiempo_Espera;
+int tiempoEsperaMl;
 AniSequence move;
 // Display
 // Modo manual (botones)
@@ -92,7 +92,7 @@ void gui() { //acordion
      .setRange(1,5)
      .setValue(5)
      .setFont(createFont("This",13))
-     .setNumberOfTickMarks(5)
+     //.setNumberOfTickMarks(5)
      .moveTo(g1)
      
      ;
@@ -129,12 +129,17 @@ void draw(){ //dibujo
   sensor(SS1); //dibujo sensor superior
   sensor(SS2); //dibujo sensor inferior
   door(); //dibujo puerta
-  //if (!manualAutomatico){
-  //movement();
-  //}
-  //else {
-    
-  //}
+  
+  if (manualAutomatico==false){
+    //move = null;
+    move = new AniSequence(this);
+    move.beginSequence();
+    move.add(Ani.to(this,Tiempo,"y",SS1));
+    move.add(Ani.to(this,2,"y",SS1));
+    move.add(Ani.to(this,Tiempo,"y",SS2));
+    move.endSequence();
+    move.start();
+  }
 }
 
 void sensor(float y){ //funcion sensores
@@ -161,28 +166,12 @@ void door(){ //funcion puerta
 
 public void Up(){
   if (manualAutomatico){
-  Ani.to (this, Tiempo, "y", SS1);
+  Ani.to(this, Tiempo, "y", SS1, Ani.QUAD_OUT);
   }
   }
   
 public void Down(){
  if (manualAutomatico){
-  Ani.to (this, Tiempo, "y", SS2);
+  Ani.to(this, Tiempo, "y", SS2, Ani.QUAD_OUT);
   }
-}
-
-void movement (){
-  move = null;
-  move = new AniSequence(this);
-  move.beginSequence();
-    if (((mouseX >=760) && (mouseX<=1160)) && ((mouseY >=340) && (mouseY<=740))) {
-       move.add(Ani.to (this, Tiempo, "y", SS1));
-       move.pause();
-       delay(tiempoEsperaMl);}
-    else{        
-       move.resume();
-       move.add(Ani.to (this, Tiempo, "y", SS2));
-  }
-  move.endSequence();
-  move.start();
 }
