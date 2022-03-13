@@ -8,6 +8,9 @@ float Tiempo, Sensor_Superior, Sensor_Inferior, y = 740, SS1, SS2; //declaracion
 boolean manualAutomatico;
 int tiempoEsperaMl, Tiempo_Espera;
 
+Ani aniO;
+Ani aniC;
+
 
 // Display
 // Modo manual (botones)
@@ -115,16 +118,24 @@ accordion.open(0,1,2);
 
 
 void draw(){ //dibujo
+  background(123,123,123); //color gris de fondo
   strokeWeight(16); //contorno ancho
   line(0, 748, 1920, 748); //linea del piso
   strokeWeight(8); //contorno delgado
   fill(255);
   rect(710, 260, 500, 480); //bordes de la puerta
   image(wrhs,960,540); //fondo warehouse
-  sensor(740 - (Sensor_Superior*100)); //dibujo sensor superior
-  sensor(740 - (Sensor_Inferior*100)); //dibujo sensor inferior
+  SS1 = 740 - (Sensor_Superior*100);
+  SS2 = 740 - (Sensor_Inferior*100);
+  sensor(SS1); //dibujo sensor superior
+  sensor(SS2); //dibujo sensor inferior
   door(); //dibujo puerta
+  
+  movement();
+
+  
 }
+
 
 void sensor(float y){ //funcion sensores
   fill(0,255,0);
@@ -135,18 +146,20 @@ void sensor(float y){ //funcion sensores
 void door(){ //funcion puerta
   strokeWeight(8);
   door = createShape(GROUP); //grupo puerta
-  blue1 = createShape(RECT, 760, 340, 400, 150); //parte azul arriba
+  blue1 = createShape(RECT, 760, y-400, 400, 150); //parte azul arriba
   blue1.setFill(color(0,0,255)); //color azul
-  l1 = createShape(LINE, 760, 490 , 760, 590); //linea izquierda
-  l2 = createShape(LINE, 1160, 490, 1160, 590); //linea derecha
-  blue2 = createShape(RECT, 760, 590, 400, 150); //parte azul abajo
+  l1 = createShape(LINE, 760, y-250 , 760, y-150); //linea izquierda
+  l2 = createShape(LINE, 1160, y-250, 1160, y-150); //linea derecha
+  blue2 = createShape(RECT, 760, y-150, 400, 150); //parte azul abajo
   blue2.setFill(color(0,0,255)); //color azul
   door.addChild(blue1); //agregar a grupo door
   door.addChild(l1);
   door.addChild(l2);
   door.addChild(blue2);
   shape(door); //dibujar door
+  
 }
+
 
 void open(){
 Ani.to (this, Tiempo, "y", SS1);
