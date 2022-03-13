@@ -4,7 +4,9 @@ ControlP5 cp5;
 Accordion accordion;
 PShape door, blue1, blue2, l1, l2; // variables que conforman la puerta
 PImage wrhs, buttonUp, buttonDown, emergency; //imagen de fondo
-float Tiempo, Sensor_Superior, Sensor_Inferior; //declaracion variables tiempo y altura de sensores
+float Tiempo, Sensor_Superior, Sensor_Inferior, y = 740, SS1, SS2; //declaracion variables tiempo y altura de sensores
+boolean manualAutomatico;
+int tiempoEsperaMl, Tiempo_Espera;
 
 
 // Display
@@ -42,6 +44,8 @@ void setup() { //setup
     .setPosition(1290, 380)
     .setImage(emergency)
     ;
+    
+    
 }
 void gui() { //acordion
   
@@ -49,34 +53,54 @@ void gui() { //acordion
   
   Group g1 = cp5.addGroup("Configuracion") //configuracion acordion
                 .setBackgroundColor(color(0))
-                .setBackgroundHeight(300)
+                .setBackgroundHeight(400)
                 .setBarHeight(50)
                 .setFont(createFont("This",20))
                 ;
   cp5.addSlider("Tiempo") //slider tiempo
-     .setPosition(60,20)
+     .setPosition(90,20)
      .setSize(120,30)
      .setRange(3,5)
      .setValue(5)
-     .setFont(createFont("This",15))
+     .setFont(createFont("This",13))
      .moveTo(g1)
      ;
 
   cp5.addSlider("Sensor_Superior") //slider sensor superior
-     .setPosition(20,80)
+     .setPosition(40,80)
      .setSize(30,120)
      .setRange(2,4)
      .setValue(4)
-     .setFont(createFont("This",12))
+     .setFont(createFont("This",13))
      .moveTo(g1)
      ;
      
   cp5.addSlider("Sensor_Inferior") //slider sensor inferior
-     .setPosition(160,80)
+     .setPosition(180,80)
      .setSize(30,120)
      .setRange(0,2)
      .setValue(0)
-     .setFont(createFont("This",12))
+     .setFont(createFont("This",13))
+     .moveTo(g1)
+     ;
+     
+  cp5.addSlider("Tiempo_Espera") //slider tiempo
+     .setPosition(90,240)
+     .setSize(120,30)
+     .setRange(1,5)
+     .setValue(5)
+     .setFont(createFont("This",13))
+     .setNumberOfTickMarks(5)
+     .moveTo(g1)
+     
+     ;
+  
+  cp5.addToggle("manualAutomatico")
+     .setPosition(100,300)
+     .setSize(90,30)
+     .setValue(true)
+     .setMode(ControlP5.SWITCH)
+     .setFont(createFont("This",13))
      .moveTo(g1)
      ;
      
@@ -87,6 +111,9 @@ void gui() { //acordion
                  ;
 accordion.open(0,1,2);
 }
+
+
+
 void draw(){ //dibujo
   strokeWeight(16); //contorno ancho
   line(0, 748, 1920, 748); //linea del piso
@@ -120,3 +147,33 @@ void door(){ //funcion puerta
   door.addChild(blue2);
   shape(door); //dibujar door
 }
+
+void open(){
+Ani.to (this, Tiempo, "y", SS1);
+  
+}
+void closeD(){
+  
+Ani.to (this, Tiempo, "y", SS2);
+//if (((mouseX >=760) && (mouseX<=1160)) && ((mouseY >=340) && (mouseY<=740))) {
+ // if (aniC.isPlaying())
+  //aniC.pause();
+  //open();
+//} else {
+//  aniC.resume();
+//}
+
+}
+
+void movement (){
+  if (!manualAutomatico){
+    if (((mouseX >=760) && (mouseX<=1160)) && ((mouseY >=340) && (mouseY<=740))) {
+       open();
+       
+       //closeD();
+    }
+       
+       
+     }
+ 
+  }
