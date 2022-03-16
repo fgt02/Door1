@@ -4,9 +4,9 @@ ControlP5 cp5;
 Accordion accordion;
 PShape door, blue1, blue2, l1, l2; // variables que conforman la puerta
 PImage wrhs, buttonUp, buttonDown, emergency; //imagen de fondo
-float Tiempo, Sensor_Superior, Sensor_Inferior, y = 740, SS1, SS2, Tiempo_Espera; //declaracion variables tiempo y altura de sensores
-boolean manualAutomatico, Up, Down, Emergency;
-int tiempoEsperaMl;
+float Tiempo, Sensor_Superior, Sensor_Inferior, y = 740, Tiempo_Espera, xx, xy, altura; //declaracion variables tiempo y altura de sensores
+boolean manualAutomatico;
+int i=0;
 AniSequence move;
 // Display
 // Modo manual (botones)
@@ -14,7 +14,7 @@ AniSequence move;
 // Sensores de limite
 // Velocidades
 
-
+  
 void setup() { //setup
   fullScreen(); //pantalla completa
   frameRate(60);
@@ -22,99 +22,79 @@ void setup() { //setup
   smooth(); //smooth
   wrhs = loadImage("wrhs.jpg"); //asigna imagen
   imageMode(CENTER); //coordenadas de la imagen son en el centro
-  gui(); //acordion
+  //gui(); //acordion
   textSize(50);
   Ani.init(this); //inicializar ani
   Ani.setDefaultEasing(Ani.QUART_OUT);
+  
+  cp5 = new ControlP5(this);
+  
   //imágenes de botones manuales
   buttonUp = loadImage("button.png");
   buttonDown = loadImage("buttonDown.png");
   emergency = loadImage("emergency.png");
-  //botones manuales
-  cp5.addButton("Up")
+ 
+ cp5.addButton("Up")
     .setPosition(1350,280)
     .setImage(buttonUp)
     .updateSize()
     ;
-  cp5.addButton("Down")
+ cp5.addButton("Down")
     .setPosition(1350, 600)
     .setImage(buttonDown)
     .updateSize()
     ;
-  cp5.addButton("Emergency")
+ cp5.addButton("Emergency")
     .setPosition(1290, 380)
     .setImage(emergency)
     .updateSize()
     ;
-    
-}
-
-void gui() { //acordion
-  
-  cp5 = new ControlP5(this);
-  
-  Group g1 = cp5.addGroup("Configuracion") //configuracion acordion
-                .setBackgroundColor(color(0))
-                .setBackgroundHeight(400)
-                .setBarHeight(50)
-                .setFont(createFont("This",20))
-                ;
   cp5.addSlider("Tiempo") //slider tiempo
-     .setPosition(90,20)
+     .setPosition(240,220)
      .setSize(120,30)
      .setRange(3,5)
-     .setValue(5)
-     .setFont(createFont("This",13))
-     .moveTo(g1)
+     .setValue(3)
+     .setFont(createFont("this",13))
      ;
-
   cp5.addSlider("Sensor_Superior") //slider sensor superior
-     .setPosition(40,80)
+     .setPosition(190,280)
      .setSize(30,120)
      .setRange(2,4)
      .setValue(4)
-     .setFont(createFont("This",13))
-     .moveTo(g1)
+     .setFont(createFont("this",13))
      ;
      
   cp5.addSlider("Sensor_Inferior") //slider sensor inferior
-     .setPosition(180,80)
+     .setPosition(350,280)
      .setSize(30,120)
      .setRange(0,2)
      .setValue(0)
-     .setFont(createFont("This",13))
-     .moveTo(g1)
+     .setFont(createFont("this",13))
      ;
      
   cp5.addSlider("Tiempo_Espera") //slider tiempo
-     .setPosition(90,240)
+     .setPosition(240,480)
      .setSize(120,30)
      .setRange(1,5)
-     .setValue(5)
-     .setFont(createFont("This",13))
-     //.setNumberOfTickMarks(5)
-     .moveTo(g1)
-     
+     .setValue(1)
+     .setFont(createFont("this",13))
      ;
   
-  cp5.addToggle("manualAutomatico")
-     .setPosition(100,300)
+    cp5.addToggle("manualAutomatico")
+    .setPosition(250,550)
+    .setSize(90,30)
+    .setValue(true)
+    .setMode(ControlP5.SWITCH)
+    .setFont(createFont("this",13))
+    ;
+    
+  cp5.addButton("Run")
+     .setPosition(250,650)
      .setSize(90,30)
-     .setValue(true)
-     .setMode(ControlP5.SWITCH)
-     .setFont(createFont("This",13))
-     .moveTo(g1)
+     .setFont(createFont("this",13))
      ;
-     
-  accordion = cp5.addAccordion("acc") //posicion acordion
-                 .setPosition(100,100)
-                 .setWidth(400)
-                 .addItem(g1)
-                 ;
-accordion.open(0,1,2);
+
 }
-
-
 
 void draw(){ //dibujo
   background(123,123,123); //color gris de fondo
@@ -124,23 +104,21 @@ void draw(){ //dibujo
   fill(255);
   rect(710, 260, 500, 480); //bordes de la puerta
   image(wrhs,960,540); //fondo warehouse
-  SS1 = 740 - (Sensor_Superior*100);
-  SS2 = 740 - (Sensor_Inferior*100);
-  sensor(SS1); //dibujo sensor superior
-  sensor(SS2); //dibujo sensor inferior
-  door(); //dibujo puerta
-  
-  if (manualAutomatico==false){
-    //move = null;
-    move = new AniSequence(this);
-    move.beginSequence();
-    move.add(Ani.to(this,Tiempo,"y",SS1));
-    move.add(Ani.to(this,2,"y",SS1));
-    move.add(Ani.to(this,Tiempo,"y",SS2));
-    move.endSequence();
-    move.start();
+  door();
+  sensor(740 - (Sensor_Superior*100)); //dibujo sensor superior
+  sensor(740 - (Sensor_Inferior*100)); //dibujo sensor inferior
+  textSize(30);
+  altura = ((740-y)/100);
+  fill(255);
+  rect(150,160,400,40);
+  rect(1290,70,270,40);
+  rect(1290,170,270,40);
+  fill(0);
+  rect(150,200,400,500);
+  text("Numero de ciclos: " + i,1300,100);
+  text("Altura: " + altura + " m", 1300,200);
+  text("PANEL DE CONTROL",160,190);
   }
-}
 
 void sensor(float y){ //funcion sensores
   fill(0,255,0);
@@ -164,14 +142,42 @@ void door(){ //funcion puerta
   shape(door); //dibujar door
 }
 
-public void Up(){
-  if (manualAutomatico){
-  Ani.to(this, Tiempo, "y", SS1, Ani.QUAD_OUT);
+void mouseMoved(){
+  xx = mouseX;
+  xy = mouseY;
+if(xx>710 && xx<1210 && xy>740 - (Sensor_Superior*100) && xy<740 - (Sensor_Inferior*100)){
+        move = new AniSequence(this);
+        move.beginSequence();
+        move.add(Ani.to(this,Tiempo,"y",740 - (Sensor_Superior*100)));  
+        move.add(Ani.to(this,Tiempo_Espera,"y",740 - (Sensor_Superior*100)));
+        move.add(Ani.to(this,Tiempo*1.2,"y",740 - (Sensor_Inferior*100)));
+        move.endSequence(); 
+        move.start();}
+  }
+
+
+void controlEvent(ControlEvent theEvent) {
+   
+  if(theEvent.isFrom("Up") && manualAutomatico == true){
+    Ani.to(this,Tiempo,"y",740 - (Sensor_Superior*100));
+ }
+  else if(theEvent.isFrom("Down") && manualAutomatico == true){
+    Ani.to(this,Tiempo*1.2,"y",740 - (Sensor_Inferior*100));
+  }
+  else if(theEvent.isFrom("Run") && manualAutomatico == false){   
+    move = new AniSequence(this);
+    move.beginSequence();
+    move.add(Ani.to(this,Tiempo,"y",740 - (Sensor_Superior*100)));  
+    move.add(Ani.to(this,Tiempo_Espera,"y",740 - (Sensor_Superior*100)));
+    move.add(Ani.to(this,Tiempo*1.2,"y",740 - (Sensor_Inferior*100)));
+    move.endSequence(); 
+    move.start();
+    i=i+1;
+ } 
+  else if(theEvent.isFrom("Emergency") && (Ani.to(this,Tiempo,"y",740 - (Sensor_Superior*100)).isPlaying() || Ani.to(this,Tiempo*1.2,"y",740 - (Sensor_Inferior*100)).isPlaying() || move.isPlaying())){
+    Ani.to(this,Tiempo,"y",740 - (Sensor_Superior*100)).pause();
+    Ani.to(this,Tiempo*1.2,"y",740 - (Sensor_Inferior*100)).pause();
+    move.pause();
   }
   }
   
-public void Down(){
- if (manualAutomatico){
-  Ani.to(this, Tiempo, "y", SS2, Ani.QUAD_OUT);
-  }
-}
